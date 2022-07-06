@@ -37,20 +37,80 @@
         // 通过替换下面这个配置来生成不同页面
         let amisJSON = {
   "type": "page",
-  "title": "我们的博客",
+  "title": "hfh1999的博客",
   "body": [
     {
-      "type": "button",
-      "label": "← 给我们提意见",
-      "actionType": "link",
-      "dialog": {
-        "title": "系统提示",
-        "body": "对你点击了"
+      "type": "markdown",
+      "value": "## 这是标题",
+      "id": "u:e35787c9b772",
+      "className": "text-muted text-lg bg-light b-a b-primary b-2x m-t m-b p-xs"
+    },
+    {
+      "type": "button-toolbar",
+      "buttons": [
+        {
+          "type": "button",
+          "label": " 给我留言",
+          "actionType": "link",
+          "dialog": {
+            "title": "系统提示",
+            "body": "对你点击了"
+          },
+          "id": "u:95e8c2dcfd4d",
+          "link": "suggestion",
+          "size": "lg",
+          "className": "",
+          "level": "success"
+        },
+        {
+          "type": "button",
+          "label": "目录",
+          "actionType": "dialog",
+          "dialog": {
+            "title": "系统提示",
+            "body": "对你点击了"
+          },
+          "id": "u:d1785f7f0994",
+          "size": "lg",
+          "className": "",
+          "level": "info"
+        }
+      ],
+      "id": "u:56a42bc884b4"
+    },
+    {
+      "type": "crud",
+      "syncLocation": false,
+      "api": {
+        "method": "get",
+        "url": "get_articles"
       },
-      "id": "u:95e8c2dcfd4d",
-      "link": "suggestion",
-      "size": "lg",
-      "className": "bg-success"
+      "columns": [
+        {
+          "name": "article_name",
+          "label": "最新文章",
+          "type": "text",
+          "placeholder": "-",
+          "sortable": true,
+          "className": "",
+          "quickEdit": false
+        }
+      ],
+      "bulkActions": [
+      ],
+      "itemActions": [
+      ],
+      "features": [
+      ],
+      "filterColumnCount": 3,
+      "id": "u:42b82296f1bd",
+      "combineNum": "",
+      "placeholder": "-",
+      "perPageAvailable": [
+        10
+      ],
+      "messages": {
+      }
     }
   ],
   "messages": {

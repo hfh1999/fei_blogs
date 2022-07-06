@@ -17,8 +17,9 @@ use axum::{
     error_handling::HandleErrorLayer,
     http::StatusCode,
     response::{IntoResponse},
-    routing::{post,get_service},
+    routing::{post,get,get_service},
     Json, Router,
+    extract::{Path}
 };
 use serde::{Deserialize, Serialize};
 use std::{
@@ -57,6 +58,7 @@ async fn main() {
                 format!("Unhandled internal error:{}",error),
             )
         }))
+        .route("/get_articles/*pages",get(get_article))
         .route("/:file/*tmp",get_service(ServeDir::new("./web_src")).handle_error(|error:io::Error|async move{
             (
                 StatusCode::INTERNAL_SERVER_ERROR,
@@ -96,6 +98,12 @@ struct UserText {
     usertext: Option<String>,
     useremail: Option<String>
 }
+#[derive(Debug, Serialize, Clone)]
+struct Return {
+    status: i64,
+    msg: String,
+    data: Data,
+}
 async fn get_text(
     Json(input): Json<UserText>
 ) -> impl IntoResponse {
@@ -115,14 +123,47 @@ async fn get_text(
     (StatusCode::CREATED, Json(return_text))
 }
 
-
-
 #[derive(Debug, Serialize, Clone)]
-struct Return {
-    status: i64,
-    msg: String,
-    data: Data,
+struct ArticleRow{
+    id:i64,
+    article_name:String
 }
+impl ArticleRow {
+    fn new()->ArticleRow{
+        ArticleRow { id:1, article_name: String::from("first article." )}
+    }
+    
+}
+#[derive(Debug, Serialize, Clone)]
+struct ArticleData{
+    items:Vec<ArticleRow>
+}
+impl ArticleData {
+    fn new()->ArticleData{
+        ArticleData { items: vec![] }
+    }
+}
+#[derive(Debug, Serialize, Clone)]
+struct Retarticles{
+    status:i64,
+    msg:String,
+    data:ArticleData
+}
+async fn get_article(Path(pages):Path<String>)
+-> impl IntoResponse{
+    let data_item = ArticleRow::new();
+    let mut tmp_data = ArticleData::new();
+    tmp_data.items.push(data_item);
+    let retvalue = Retarticles{
+        status:0,
+        msg:String::from(""),
+        data:tmp_data
+    };
+    Json(retvalue)
+}
+
+
+
 
 #[derive(Debug, Serialize, Clone)]
 struct Data{
